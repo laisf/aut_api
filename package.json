@@ -4,7 +4,8 @@
   "description": "API para login, registro, consulta de usuários e transferências (Node.js, Express)",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "mocha \"test/**/*.test.js\""
   },
   "keywords": [
     "express",
@@ -15,7 +16,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "chai": "^4.3.7",
     "express": "^4.21.2",
     "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "mocha": "^11.7.1",
+    "sinon": "^21.0.0",
+    "supertest": "^7.1.4"
   }
 }
