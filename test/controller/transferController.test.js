@@ -16,12 +16,12 @@ describe('Transfer Controller', () => {
     // });
 
      describe('POST /transfer', () => {
-        it('Quando informa remetente e destinatario inexistente recebo 400', async () => {
+        it('Quando informa remetente e destinatario inexistente recebo 404', async () => {
             const resposta = await request(app)
                 .post('/transfer')
-                .send({ from: 'alice', to: 'bob', amount: 1000 });
-            expect(resposta.status).to.equal(400);
-            expect(resposta.body).to.have.property( 'error', 'Usuário remetente não encontrado' );
+                .send({ from: 'alice', to: 'bob', value: 1000 });
+            expect(resposta.status).to.equal(404);
+            expect(resposta.body).to.have.property('error', 'Usuário remetente não encontrado');
         });
     });
 });
