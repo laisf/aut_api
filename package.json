@@ -1,0 +1,21 @@
+{
+  "name": "aut_api",
+  "version": "1.0.0",
+  "description": "API para login, registro, consulta de usuários e transferências (Node.js, Express)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "express",
+    "api",
+    "swagger",
+    "nodejs"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2",
+    "swagger-ui-express": "^5.0.1"
+  }
+}
