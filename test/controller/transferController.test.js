@@ -19,9 +19,9 @@ describe('Transfer Controller', () => {
         it('Quando informa remetente e destinatario inexistente recebo 400', async () => {
             const resposta = await request(app)
                 .post('/transfer')
-                .send({ from: 'alice', to: 'bob', amount: 1000 });
+                .send({ from: 'alice', to: 'bob', value: 1000 });
             expect(resposta.status).to.equal(400);
-            expect(resposta.body).to.have.property( 'error', 'Usuário remetente não encontrado' );
+            expect(resposta.body).to.have.property('error', 'Usuário remetente não encontrado');
         });
     });
 });

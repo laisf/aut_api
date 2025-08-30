@@ -4,7 +4,7 @@ const { findUserByUsername } = require('./userService');
 function createTransfer({ from, to, value }) {
   const sender = findUserByUsername(from);
   if (!sender) {
-    throw new Error('Usuário remetente não encontrado');
+    throw new Error('Usuário remetente n encontrado');
   }
   const recipient = findUserByUsername(to);
   if (!recipient) {
