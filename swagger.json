@@ -54,7 +54,8 @@
         },
         "responses": {
           "200": { "description": "Login realizado" },
-          "401": { "description": "Credenciais inválidas" }
+          "401": { "description": "Credenciais inválidas" },
+          "404": { "description": "Usuário não encontrado" }
         }
       }
     },
@@ -78,16 +79,17 @@
                 "properties": {
                   "from": { "type": "string" },
                   "to": { "type": "string" },
-                  "amount": { "type": "number" }
+                  "value": { "type": "number" }
                 },
-                "required": ["from", "to", "amount"]
+                "required": ["from", "to", "value"]
               }
             }
           }
         },
         "responses": {
           "201": { "description": "Transferência realizada" },
-          "400": { "description": "Erro na transferência" }
+          "400": { "description": "Erro na transferência ou usuário inexistente" },
+          "404": { "description": "Usuário remetente ou destinatário não encontrado" }
         }
       }
     },
