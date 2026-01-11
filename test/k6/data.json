@@ -1,0 +1,6 @@
+[
+  { "id": 1, "transferValue": 500, "description": "Pequena transferência" },
+  { "id": 2, "transferValue": 1500, "description": "Transferência média" },
+  { "id": 3, "transferValue": 3000, "description": "Transferência grande" },
+  { "id": 4, "transferValue": 4500, "description": "Transferência muito grande" }
+]
