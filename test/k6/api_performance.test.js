@@ -6,11 +6,9 @@ import { randomString, randomIntBetween } from 'https://jslib.k6.io/k6-utils/1.2
 import { uuidv4 } from 'https://jslib.k6.io/k6-utils/1.2.0/index.js';
 import data from './data.json';
 
-// Variáveis de Ambiente (conceito: Variável de Ambiente)
 const BASE_URL = __ENV.BASE_URL || 'http://localhost:3000';
 const MAX_VUS = parseInt(__ENV.MAX_VUS || '20');
 
-// Métricas personalizadas (conceito: Trends)
 const registerTime = new Trend('register_time');
 const loginTime = new Trend('login_time');
 const transferTime = new Trend('transfer_time');
@@ -18,14 +16,14 @@ const successRate = new Rate('successful_requests');
 const transferCounter = new Counter('total_transfers');
 
 export const options = {
-  // Conceito: Stages - carga crescente
+  // carga crescente
   stages: [
     { duration: '10s', target: 5 },   // Aquecimento
     { duration: '30s', target: MAX_VUS }, // Carga máxima
     { duration: '20s', target: 10 },  // Descida gradual
     { duration: '10s', target: 0 },   // Finalização
   ],
-  // Conceito: Thresholds - limites de desempenho
+
   thresholds: {
     http_req_duration: ['p(95)<1000', 'p(99)<2000'],
     http_req_failed: ['rate<0.05'],
@@ -41,9 +39,7 @@ export default function () {
   let userCredentials;
   let loggedInUser;
 
-  // Conceito: Groups - organização de testes
   group('Register User', () => {
-    // Conceito: Faker - geração de dados fictícios usando randomString
     const username = `user_${randomString(8)}_${uuidv4()}`;
     const password = `pwd_${randomString(10)}`;
 
@@ -53,7 +49,6 @@ export default function () {
 
     registerTime.add(duration);
 
-    // Conceito: Checks - validação de respostas
     const registerCheck = check(result.response, {
       'register status is 201': (r) => r.status === 201,
       'register response time < 1s': (r) => r.timings.duration < 1000,
@@ -77,7 +72,6 @@ export default function () {
 
   sleep(1);
 
-  // Conceito: Reaproveitamento de Resposta - usando credenciais do registro
   if (userCredentials) {
     group('Login User', () => {
       const startTime = Date.now();
@@ -86,14 +80,13 @@ export default function () {
 
       loginTime.add(duration);
 
-      // Conceito: Uso de Token de Autenticação - usando username como identificador de sessão
       const loginCheck = check(loginRes, {
         'login status is 200': (r) => r.status === 200,
         'login response time < 500ms': (r) => r.timings.duration < 500,
         'user authenticated': (r) => {
           try {
             const body = r.json();
-            loggedInUser = body.username; // Usando username como "token" de sessão
+            loggedInUser = body.username; // token
             return body.username === userCredentials.username;
           } catch (e) {
             return false;
@@ -111,13 +104,11 @@ export default function () {
 
   sleep(1);
 
-  // Conceito: Data-Driven Testing - usando dados do data.json
   if (loggedInUser && data && data.length > 0) {
     group('Get All Users', () => {
       const res = http.get(`${BASE_URL}/users`, {
         headers: {
           'Content-Type': 'application/json',
-          // Conceito: Uso de Token de Autenticação - header com identificador
           'X-User-Identifier': loggedInUser,
         },
       });
@@ -138,20 +129,13 @@ export default function () {
 
   sleep(1);
 
-  // Conceito: Data-Driven Testing - iterando sobre dados do JSON
   if (loggedInUser && data && data.length > 0) {
     group('Transfer Operations', () => {
-      // Seleciona dados aleatórios do array para testar (Data-Driven Testing)
       const transferData = data[randomIntBetween(0, data.length - 1)];
-      
-      // Cria destinatário único para este teste
       const recipientUsername = `recipient_${randomString(6)}_${__VU}_${__ITER}`;
-      
-      // Registra destinatário
       const recipientRes = registerUser(recipientUsername, 'password123');
       
       if (recipientRes.response.status === 201) {
-        // Conceito: Data-Driven Testing - usando valor do data.json
         const transferValue = transferData.transferValue;
         
         const transferPayload = JSON.stringify({
@@ -164,9 +148,9 @@ export default function () {
         const transferRes = http.post(`${BASE_URL}/transfer`, transferPayload, {
           headers: {
             'Content-Type': 'application/json',
-            'X-User-Identifier': loggedInUser, // Token/Identificador
+            'X-User-Identifier': loggedInUser, // Token
           },
-        });
+        })
         const duration = Date.now() - startTime;
 
         transferTime.add(duration);
