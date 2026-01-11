@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "mocha \"test/controller/**/*.test.js\""
+    "test": "mocha \"test/controller/**/*.test.js\"",
+    "test-k6": "k6 run test/k6/api_performance.test.js"
   },
   "keywords": [
     "express",

@@ -20,7 +20,7 @@ export default function () {
     const res = http.post('http://localhost:3000/register', payload, {
       headers: { 'Content-Type': 'application/json' },
     });
-    console.log(`STATUS: ${res.status} | BODY: ${res.body}`);
+
     check(res, {
       'status is 201': (r) => r.status === 201,
       'user registered': (r) => r.json().username !== undefined,
